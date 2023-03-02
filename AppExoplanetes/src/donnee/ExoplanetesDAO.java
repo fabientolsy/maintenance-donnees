@@ -1,5 +1,6 @@
 package donnee;
 
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
 import java.net.MalformedURLException;
@@ -41,7 +42,7 @@ public class ExoplanetesDAO {
 	{
 		System.out.println("ExoplanetesDAO.listerExoplanetes()");
 		
-		List<Exoplanete> listeExoplanetes =  new ArrayList<Exoplanete>();	
+		/*List<Exoplanete> listeExoplanetes =  new ArrayList<Exoplanete>();	
 		
 		String URL_LISTE_EXO_PLANETES = "http://51.79.67.33/service.exoplanetes/exoplanetes.php";
 		
@@ -58,7 +59,7 @@ public class ExoplanetesDAO {
 
 			xml = new String(xml.getBytes("UTF-8"), "ISO-8859-1");
 			System.out.println(xml);
-		} catch (Exception e) {
+		}catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -96,6 +97,24 @@ public class ExoplanetesDAO {
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+		
+		
+		List<Exoplanete> listeExoplanetes =  new ArrayList<Exoplanete>();
+		
+		try
+		{
+			// Connexion au nuage
+			String ID_DB = "maintenance-donnees";
+			Credentials credit = GoogleCredentials.fromStream(new FileInputStream("cle-donnees.json"));
+			
+			Firestore nuage = FirestoreOptions.getDefaultInstance().toBuilder().setCredentials(credit).setProjectId(ID_DB).build().getService();
+			
+			System.out.print("Nuage= " + nuage);
+		}
+		catch (Exception e) 
+		{
 			e.printStackTrace();
 		}
 		
