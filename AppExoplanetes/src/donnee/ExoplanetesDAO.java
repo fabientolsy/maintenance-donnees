@@ -10,7 +10,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -105,13 +107,25 @@ public class ExoplanetesDAO {
 		
 		try
 		{
-			// Connexion au nuage
-			String ID_DB = "maintenance-donnees";
-			Credentials credit = GoogleCredentials.fromStream(new FileInputStream("cle-donnees.json"));
-			
+			//Connexion au nuage
+			String ID_DB ="maintenance-donnees";
+			Credentials credit = GoogleCredentials.fromStream(new FileInputStream("maintenance-donnees-firebase-adminsdk-ua52b-289bcba6aa.json"));
 			Firestore nuage = FirestoreOptions.getDefaultInstance().toBuilder().setCredentials(credit).setProjectId(ID_DB).build().getService();
 			
-			System.out.print("Nuage= " + nuage);
+			System.out.println(nuage);
+			
+			QuerySnapshot resultat = nuage.collection("planetes").get().get();
+			
+			List<QueryDocumentSnapshot> exoplanetesNuage = resultat.getDocuments();
+			System.out.println(exoplanetesNuage);
+			
+			System.out.println("Affichage resultat avant for");
+			for(QueryDocumentSnapshot exoplaneteNuage : exoplanetesNuage)
+			{
+				System.out.println("Affichage resultat");
+				System.out.println("Etoile: " + exoplaneteNuage.getString("etoile"));	
+				System.out.println(" ");
+			}
 		}
 		catch (Exception e) 
 		{
