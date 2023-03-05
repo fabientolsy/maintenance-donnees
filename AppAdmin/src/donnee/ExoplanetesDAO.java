@@ -1,5 +1,6 @@
 package donnee;
 
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -22,6 +23,13 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import com.google.auth.Credentials;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.FirestoreOptions;
+import com.google.cloud.firestore.QueryDocumentSnapshot;
+import com.google.cloud.firestore.QuerySnapshot;
+
 import modele.Exoplanete;
 
 public class ExoplanetesDAO {
@@ -34,63 +42,46 @@ public class ExoplanetesDAO {
 	{
 		System.out.println("ExoplanetesDAO.listerExoplanetes()");
 		
-		List<Exoplanete> listeExoplanetes =  new ArrayList<Exoplanete>();	
+		List<Exoplanete> listeExoplanetes =  new ArrayList<Exoplanete>();
 		
-		String SQL_LISTER_EXOPLANETES = "http://51.79.67.33/service.exoplanetes/exoplanetes.php";
-		
-		String xml = "";
-
-		
-		try {
-			URL url = new URL(SQL_LISTER_EXOPLANETES);
-			InputStream flux = url.openConnection().getInputStream();
-			Scanner lecteur = new Scanner(flux);
-			lecteur.useDelimiter("\\A");
-			xml = lecteur.next();
-			lecteur.close();
-
-			xml = new String(xml.getBytes("UTF-8"), "ISO-8859-1");
-			System.out.println(xml);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		try {
-			DocumentBuilder parseur  = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-			Document document = parseur.parse(new StringBufferInputStream(xml));
-			NodeList listeNoeudsExoPlanetes = document.getElementsByTagName("planete");
+		try
+		{
+			//Connexion au nuage
+			String ID_DB ="maintenance-donnees";
+			Credentials credit = GoogleCredentials.fromStream(new FileInputStream("maintenance-donnees-firebase-adminsdk-ua52b-289bcba6aa.json"));
+			Firestore nuage = FirestoreOptions.getDefaultInstance().toBuilder().setCredentials(credit).setProjectId(ID_DB).build().getService();
 			
-			for(int i = 0; i <listeNoeudsExoPlanetes.getLength(); i++) 
+			System.out.println(nuage);
+			
+			QuerySnapshot resultat = nuage.collection("planetes").get().get();
+			
+			List<QueryDocumentSnapshot> exoplanetesNuage = resultat.getDocuments();
+			System.out.println(exoplanetesNuage);
+			
+			System.out.println("Affichage resultat avant for");
+			for(QueryDocumentSnapshot exoplaneteNuage : exoplanetesNuage)
 			{
-				Element noeudExopPlanete = (Element)listeNoeudsExoPlanetes.item(i);
-				int id = parseInt(noeudExopPlanete.getElementsByTagName("id").item(0).getTextContent());
-				String planete = noeudExopPlanete.getElementsByTagName("nom").item(0).getTextContent();
-				String etoile = noeudExopPlanete.getElementsByTagName("etoile").item(0).getTextContent();
-				String masse = noeudExopPlanete.getElementsByTagName("masse").item(0).getTextContent();
-				String rayon = noeudExopPlanete.getElementsByTagName("rayon").item(0).getTextContent();
-				String flux = noeudExopPlanete.getElementsByTagName("flux").item(0).getTextContent();
-				String temperature = noeudExopPlanete.getElementsByTagName("temperature").item(0).getTextContent();
-				String periode = noeudExopPlanete.getElementsByTagName("periode").item(0).getTextContent();
-				String distance = noeudExopPlanete.getElementsByTagName("distance").item(0).getTextContent();
-				
-				System.out.println(planete + " - " + etoile);
+				/*System.out.println("Affichage resultat");
+				System.out.println("Etoile: " + exoplaneteNuage.getString("etoile"));*/
 				
 				Exoplanete exoplanete = new Exoplanete();
-				exoplanete.setId(id);
-				exoplanete.setPlanete(planete);
-				exoplanete.setEtoile(etoile);
-				exoplanete.setMasse(masse);
-				exoplanete.setRayon(rayon);
-				exoplanete.setFlux(flux);
-				exoplanete.setTemperature(temperature);
-				exoplanete.setPeriode(periode);
-				exoplanete.setDistance(distance);
+				
+				exoplanete.setPlanete(exoplaneteNuage.getString("planete"));
+				exoplanete.setEtoile(exoplaneteNuage.getString("etoile"));
+				exoplanete.setMasse(exoplaneteNuage.getString("masse"));
+				exoplanete.setRayon(exoplaneteNuage.getString("rayon"));
+				exoplanete.setFlux(exoplaneteNuage.getString("flux"));
+				exoplanete.setTemperature(exoplaneteNuage.getString("temperature"));
+				exoplanete.setPeriode(exoplaneteNuage.getString("periode"));
+				exoplanete.setDistance(exoplaneteNuage.getString(ID_DB));
+				
+				System.out.println(exoplanete.getPlanete());
 				
 				listeExoplanetes.add(exoplanete);
 			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
+		}
+		catch (Exception e) 
+		{
 			e.printStackTrace();
 		}
 		
