@@ -42,6 +42,7 @@ public class VueExoplanetes extends Vue{
 		
 	}
 	
+	
 	public void afficherExoplanetes(List<Exoplanete> exoplanetes)
 	{	
 		// Recuperation de l'objet dans lequel afficher
@@ -53,7 +54,7 @@ public class VueExoplanetes extends Vue{
 		TableColumn colonneEditer = (TableColumn) tableau.getColumns().get(2);
 		TableColumn colonneEffacer = (TableColumn) tableau.getColumns().get(3);
 		
-		colonneNom.setCellValueFactory(new PropertyValueFactory<>("nom"));
+		colonneNom.setCellValueFactory(new PropertyValueFactory<>("planete"));
 		colonneEtoile.setCellValueFactory(new PropertyValueFactory<>("etoile"));
 		colonneEditer.setCellFactory(ActionCellule.<Exoplanete>forTableColumn("Editer", (Exoplanete e) -> {
 			controleur.notifierActionEditerPourExoplanete(e);
