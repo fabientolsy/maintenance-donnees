@@ -133,8 +133,12 @@ public class ExoplanetesDAO {
 				exoplanete.setRayon(exoplaneteNuage.getString("rayon"));
 				exoplanete.setFlux(exoplaneteNuage.getString("flux"));
 				exoplanete.setTemperature(exoplaneteNuage.getString("temperature"));
+				exoplanete.setPeriode(exoplaneteNuage.getString("periode"));
+				exoplanete.setDistance(exoplaneteNuage.getString("distance"));
 				
 				System.out.println(exoplanete.getNom());
+				
+				listeExoplanetes.add(exoplanete);
 				
 			}
 		}
