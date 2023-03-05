@@ -138,6 +138,7 @@ public class ExoplanetesDAO {
 				
 				System.out.println(exoplanete.getNom());
 				
+				listeExoplanetes.add(exoplanete);
 			}
 		}
 		catch (Exception e) 
