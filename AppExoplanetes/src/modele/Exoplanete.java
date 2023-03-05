@@ -9,6 +9,8 @@ public class Exoplanete {
 	protected String rayon;
 	protected String flux;
 	protected String temperature;
+	protected String periode;
+	protected String distance;
 	
 	public Exoplanete()
 	{
@@ -69,7 +71,6 @@ public class Exoplanete {
 	public void setDistance(String distance) {
 		this.distance = distance;
 	}
-	protected String periode;
-	protected String distance;
+	
 	
 }

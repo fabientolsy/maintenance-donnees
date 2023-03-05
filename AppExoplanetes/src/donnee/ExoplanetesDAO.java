@@ -122,9 +122,20 @@ public class ExoplanetesDAO {
 			System.out.println("Affichage resultat avant for");
 			for(QueryDocumentSnapshot exoplaneteNuage : exoplanetesNuage)
 			{
-				System.out.println("Affichage resultat");
-				System.out.println("Etoile: " + exoplaneteNuage.getString("etoile"));	
-				System.out.println(" ");
+				/*System.out.println("Affichage resultat");
+				System.out.println("Etoile: " + exoplaneteNuage.getString("etoile"));*/
+				
+				Exoplanete exoplanete = new Exoplanete();
+				
+				exoplanete.setNom(exoplaneteNuage.getString("planete"));
+				exoplanete.setEtoile(exoplaneteNuage.getString("etoile"));
+				exoplanete.setMasse(exoplaneteNuage.getString("masse"));
+				exoplanete.setRayon(exoplaneteNuage.getString("rayon"));
+				exoplanete.setFlux(exoplaneteNuage.getString("flux"));
+				exoplanete.setTemperature(exoplaneteNuage.getString("temperature"));
+				
+				System.out.println(exoplanete.getNom());
+				
 			}
 		}
 		catch (Exception e) 
