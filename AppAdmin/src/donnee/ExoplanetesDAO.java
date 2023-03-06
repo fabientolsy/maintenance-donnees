@@ -128,7 +128,7 @@ public class ExoplanetesDAO {
 			
 			System.out.println(nouvellePlanete);
 			
-			DocumentReference nouvellePlaneteNuage = nuage.collection(ID_DB).document();
+			DocumentReference nouvellePlaneteNuage = nuage.collection("planetes").document();
 			
 			ApiFuture<WriteResult> resultat = nouvellePlaneteNuage.set(nouvellePlanete);
 			
