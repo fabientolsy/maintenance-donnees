@@ -1,0 +1,73 @@
+/*
+ *
+https://pixabay.com/fr/vectors/europe-monde-globe-terre-planet-4103975/
+*/
+#fenetre
+{
+    -fx-background-color:#fff;
+}
+#entete
+{
+    -fx-background-color: linear-gradient(from 25% 25% to 50% 50%, blue, green);
+}
+#entete #titre
+{
+    -fx-text-fill:white;
+}
+#menu
+{
+    -fx-background-color: green;
+}
+
+#menu Button
+{
+    -fx-background-color: green;
+    -fx-border-radius: 0px;
+    -fx-border-insets: 0px 0px 0px 0px;
+    -fx-min-width:100%;
+}
+
+#menu Button:hover{
+    -fx-background-color: #333333;
+    -fx-cursor:hand;
+}
+#menu Button:pressed
+{
+    -fx-background-color: orange;
+}
+
+#espace
+{
+    -fx-background-color:  white;
+}
+#donnees
+{
+    -fx-background-color:black;
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
+    -fx-border-insets: -5px;
+    -fx-border-color: black;
+    -fx-border-width: 3px;
+}
+#sous-titre
+{
+    -fx-background-color:black;
+    -fx-background-color: linear-gradient(from 25% 25% to 100% 100%, green, blue);
+    -fx-text-fill:white;
+    -fx-font-size:30;
+}
+
+TableView
+{
+    -fx-background-color: transparent;
+
+}
+
+TableView .column-header,
+TableView .column-header-background .filler 
+{
+    -fx-background-color: blue;
+    -fx-text-fill:white;
+}
+
+

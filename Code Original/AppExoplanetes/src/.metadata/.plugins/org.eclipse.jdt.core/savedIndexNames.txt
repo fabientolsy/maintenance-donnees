@@ -1,0 +1,12 @@
+INDEX VERSION 1.131+D:\GitHub\devoir-service-2022-fabientolsy\AppExoplanetes\src\.metadata\.plugins\org.eclipse.jdt.core
+2358345782.index
+1696374812.index
+1692183340.index
+4100621438.index
+3194110558.index
+344342905.index
+1865797976.index
+252447082.index
+972001800.index
+1566871315.index
+639401297.index
