@@ -163,6 +163,8 @@ public class ExoplanetesDAO {
 			
 			System.out.println(nuage);
 			
+			nuage.collection("planetes").document("test").delete();
+			
 			Map<String, Object> exoplaneteModifiee = new HashMap<>();
 			exoplaneteModifiee.put("planete", exoplanete.getPlanete());
 			exoplaneteModifiee.put("etoile", exoplanete.getEtoile());
@@ -195,22 +197,23 @@ public class ExoplanetesDAO {
 	}
 	public void effacerExoplanete(Exoplanete exoplanete)
 	{		
-		System.out.println("supprimer " + exoplanete.getPlanete());
-		String id = exoplanete.getId();
-		String URL_SUPPRIMER_EXOPLANETE = "http://51.79.67.33/service.exoplanetes/supprimer-exoplanete.php?" + id;
-		
+		//Connexion au nuage
+		String ID_DB ="maintenance-donnees";
+		Credentials credit;
 		try {
-			URL url = new URL(URL_SUPPRIMER_EXOPLANETE);
-			HttpURLConnection connexion = (HttpURLConnection) url.openConnection();
-			connexion.setDoOutput(true);
-			connexion.setRequestMethod("POST");
-
-			connexion.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-
-			connexion.disconnect();
-		} catch (Exception e) {
+			credit = GoogleCredentials.fromStream(new FileInputStream("maintenance-donnees-firebase-adminsdk-ua52b-289bcba6aa.json"));
+			Firestore nuage = FirestoreOptions.getDefaultInstance().toBuilder().setCredentials(credit).setProjectId(ID_DB).build().getService();
+			
+			System.out.println(nuage);
+			
+			nuage.collection("planetes").document(exoplanete.getReference()).delete();
+			
+			listerExoplanetes();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		
 	}	
 }
