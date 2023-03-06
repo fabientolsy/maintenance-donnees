@@ -2,7 +2,7 @@ package modele;
 
 public class Exoplanete {
 
-	protected int id;
+	protected String id;
 	protected String planete;
 	protected String etoile;
 	protected String masse;
@@ -12,10 +12,10 @@ public class Exoplanete {
 	protected String periode;
 	protected String distance;
 	
-	public int getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getPlanete() {

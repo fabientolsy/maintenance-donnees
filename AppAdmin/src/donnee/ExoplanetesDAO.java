@@ -1,6 +1,8 @@
 package donnee;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -13,7 +15,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -66,6 +70,7 @@ public class ExoplanetesDAO {
 				
 				Exoplanete exoplanete = new Exoplanete();
 				
+				exoplanete.setId(exoplaneteNuage.getString("id"));
 				exoplanete.setPlanete(exoplaneteNuage.getString("planete"));
 				exoplanete.setEtoile(exoplaneteNuage.getString("etoile"));
 				exoplanete.setMasse(exoplaneteNuage.getString("masse"));
@@ -118,31 +123,41 @@ public class ExoplanetesDAO {
 	
 	public void editerExoplanete(Exoplanete exoplanete)
 	{		
-		System.out.println("editer " + exoplanete.getPlanete());
-		String parametres = "id="+ exoplanete.getId() +"&planete=" + exoplanete.getPlanete() + "&etoile=" + exoplanete.getEtoile();
-		String URL_EDITER_EXOPLANETE = "http://51.79.67.33/service.exoplanetes/modifier-exoplanete.php?" + parametres;
-		try {
-			URL url = new URL(URL_EDITER_EXOPLANETE);
-			HttpURLConnection connexion = (HttpURLConnection) url.openConnection();
-			connexion.setDoOutput(true);
-			connexion.setRequestMethod("POST");
-			connexion.setFixedLengthStreamingMode(parametres.getBytes().length);
-			connexion.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-	
-			OutputStream flux = connexion.getOutputStream();
-			OutputStreamWriter messager = new OutputStreamWriter(flux);
+		//Connexion au nuage
+		String ID_DB ="maintenance-donnees";
+		Credentials credit;
+		try 
+		{
+			credit = GoogleCredentials.fromStream(new FileInputStream("maintenance-donnees-firebase-adminsdk-ua52b-289bcba6aa.json"));
+			Firestore nuage = FirestoreOptions.getDefaultInstance().toBuilder().setCredentials(credit).setProjectId(ID_DB).build().getService();
 			
-			messager.write(parametres);
-			messager.close();
-			connexion.disconnect();
-		} catch (Exception e) {
+			System.out.println(nuage);
+			
+			Map<String, Object> exoplaneteModifiee = new HashMap<>();
+			exoplaneteModifiee.put("planete", exoplanete.getPlanete());
+			System.out.println(exoplaneteModifiee);
+			nuage.collection("planetes").document(exoplanete.getId()).set(exoplaneteModifiee);
+			
+			System.out.println("Ca a marche !");
+		}  
+		
+		catch (FileNotFoundException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		
+		catch (IOException e) 
+		{
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 	}
 	public void effacerExoplanete(Exoplanete exoplanete)
 	{		
 		System.out.println("supprimer " + exoplanete.getPlanete());
-		int id = exoplanete.getId();
+		String id = exoplanete.getId();
 		String URL_SUPPRIMER_EXOPLANETE = "http://51.79.67.33/service.exoplanetes/supprimer-exoplanete.php?" + id;
 		
 		try {
