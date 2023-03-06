@@ -70,6 +70,9 @@ public class ExoplanetesDAO {
 				
 				Exoplanete exoplanete = new Exoplanete();
 				
+				System.out.println("Reference: " + exoplaneteNuage.getReference().getId().toString());
+				
+				exoplanete.setReference(exoplaneteNuage.getReference().getId().toString());
 				exoplanete.setId(exoplaneteNuage.getString("id"));
 				exoplanete.setPlanete(exoplaneteNuage.getString("planete"));
 				exoplanete.setEtoile(exoplaneteNuage.getString("etoile"));
@@ -135,8 +138,17 @@ public class ExoplanetesDAO {
 			
 			Map<String, Object> exoplaneteModifiee = new HashMap<>();
 			exoplaneteModifiee.put("planete", exoplanete.getPlanete());
+			exoplaneteModifiee.put("etoile", exoplanete.getEtoile());
+			exoplaneteModifiee.put("masse", exoplanete.getMasse());
+			exoplaneteModifiee.put("rayon", exoplanete.getRayon());
+			exoplaneteModifiee.put("flux", exoplanete.getFlux());
+			exoplaneteModifiee.put("temperature", exoplanete.getTemperature());
+			exoplaneteModifiee.put("periode", exoplanete.getPeriode());
+			exoplaneteModifiee.put("distance", exoplanete.getDistance());
+			
 			System.out.println(exoplaneteModifiee);
-			nuage.collection("planetes").document(exoplanete.getId()).set(exoplaneteModifiee);
+			
+			nuage.collection("planetes").document(exoplanete.getReference()).set(exoplaneteModifiee);
 			
 			System.out.println("Ca a marche !");
 		}  

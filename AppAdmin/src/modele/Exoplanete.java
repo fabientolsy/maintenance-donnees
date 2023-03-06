@@ -2,6 +2,13 @@ package modele;
 
 public class Exoplanete {
 
+	protected String reference;
+	public String getReference() {
+		return reference;
+	}
+	public void setReference(String reference) {
+		this.reference = reference;
+	}
 	protected String id;
 	protected String planete;
 	protected String etoile;
